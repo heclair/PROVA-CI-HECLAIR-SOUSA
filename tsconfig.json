@@ -2,16 +2,14 @@
   "compilerOptions": {
     "target": "ES2019",
     "module": "commonjs",
-    "moduleResolution": "node",
+    "rootDir": ".",
+    "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "rootDir": ".",
-    "outDir": "dist",
-    "types": ["node", "jest"],
-    "verbatimModuleSyntax": false,
-    "isolatedModules": false
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true
   },
-  "include": ["src/**/*.ts", "App.ts", "App.test.ts"],
+  "include": ["src", "App.ts", "App.test.ts"],
   "exclude": ["node_modules", "dist"]
 }
