@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "types": ["node", "jest"],
+    "verbatimModuleSyntax": false,
+    "isolatedModules": false
+  },
+  "include": ["src/**/*.ts", "App.ts", "App.test.ts"],
+  "exclude": ["node_modules", "dist"]
+}
