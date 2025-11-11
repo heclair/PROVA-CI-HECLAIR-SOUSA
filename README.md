@@ -1,4 +1,4 @@
-# PROVA-CI-HECLAIR-SOUSA — Versão com 1 job (Node 20)
+# PROVA-CI-HECLAIR-SOUSA
 
 Projeto de **Agenda (TypeScript)** com **Jest** e **GitHub Actions** usando **um único job** (Node 20.x), otimizado para rodar exatamente como está no seu computador.
 
