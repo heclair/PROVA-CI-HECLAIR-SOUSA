@@ -1,95 +1,154 @@
-# PROVA-CI-HECLAIR-SOUSA
+# PROVA-CI-HECLAIR-SOUSA — Versão com 1 job (Node 20)
 
-Este projeto é uma aplicação simples de **Agenda de Compromissos**, desenvolvida em **TypeScript**, com testes automatizados utilizando **Jest**, e pipeline de Integração Contínua configurado com **GitHub Actions**.
+Projeto de **Agenda (TypeScript)** com **Jest** e **GitHub Actions** usando **um único job** (Node 20.x), otimizado para rodar exatamente como está no seu computador.
 
 ## 👤 Autor
 **Heclair Sousa**
 
 ---
 
-## 📌 Funcionalidade Principal
-A aplicação permite:
-- Criar um compromisso com **título** e **data/hora**;
-- Listar compromissos em ordem cronológica;
-- Buscar compromissos por dia;
-- Cancelar compromisso pelo ID.
-
-Não há necessidade de banco de dados real. O armazenamento é feito em **memória**, conforme permitido no enunciado (**mock database**).
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-PROVA-CI-HECLAIR-SOUSA/
-├─ src/
-│  └─ index.ts         # Demonstração da agenda
-├─ App.ts               # Funções principais da lógica da Agenda
-├─ App.test.ts          # Testes com Jest
-├─ jest.config.cjs      # Configuração de testes
-├─ tsconfig.json        # Configuração do TypeScript
-└─ .github/workflows/ci.yml   # Pipeline CI
-```
-
----
-
-## 🚀 Como Executar o Projeto
-
-### 1. Instalar dependências
+## 🚀 Como rodar localmente (passo a passo)
 ```bash
-npm install
-```
+# 1) Instalar dependências
+npm ci
 
-### 2. Rodar os testes
-```bash
+# 2) Rodar testes com cobertura
 npm test
-```
 
-### 3. Compilar o projeto
-```bash
+# 3) Compilar TypeScript
 npm run build
-```
 
-### 4. Executar
-```bash
+# 4) Executar a demonstração
 npm start
 ```
 
+> Se mudar o nome/branch principal para `master`, mantenha o mesmo no CI abaixo.
+
 ---
 
-## 🔁 Integração Contínua (CI)
-O projeto inclui pipeline configurado no arquivo:
+## 🔧 `package.json` (trecho relevante)
+Use **Jest 29** com **ts-jest 29** (compatíveis entre si).
 
+```json
+{
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "test": "jest --coverage",
+    "start": "node dist/src/index.js"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
 ```
-.github/workflows/ci.yml
+
+Se você estiver com Jest 30 instalado, remova `node_modules` e **volte para a 29**:
+```bash
+rm -rf node_modules package-lock.json
+npm install -D jest@29.7.0 ts-jest@29.2.5 @types/jest@29.5.12 typescript@5.6.3 ts-node@10.9.2
+npm ci
 ```
 
-### O pipeline executa automaticamente quando:
-- Você faz **push** para a branch `main`
-- Você abre um **Pull Request** para `main`
+---
 
-### O pipeline realiza:
-1. Instalação das dependências
-2. Execução dos testes automatizados
-3. Build do projeto
+## ⚙️ `jest.config.cjs`
+Coloque este arquivo na raiz e **apague** outras configs do Jest para não dar conflito.
+```js
+/** @type {import('jest').Config} */
+module.exports = {
+  testEnvironment: 'node',
+  preset: 'ts-jest',
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  collectCoverageFrom: ['**/*.ts', '!**/*.d.ts', '!dist/**', '!**/*.test.ts'],
+  testMatch: ['**/?(*.)+(spec|test).ts'],
+  verbose: true
+};
+```
 
 ---
 
-## ✅ Requisitos da Prova Atendidos
-
-| Requisito | Atendido? |
-|----------|:---------:|
-| Configuração correta do arquivo YAML do GitHub Actions | ✅ |
-| Execução automática em push e pull request | ✅ |
-| Execução bem-sucedida dos testes | ✅ |
-| Organização correta do projeto e scripts no package.json | ✅ |
-| Banco de dados mockado (sem Postgres) | ✅ |
+## 🧩 `tsconfig.json` (essencial)
+Garante build para `dist/` e que o `start` rode `dist/src/index.js`.
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "rootDir": ".",
+    "outDir": "dist",
+    "lib": ["ES2020"],
+    "types": ["node", "jest"],
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true
+  },
+  "include": ["src", "App.ts", "App.test.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+```
 
 ---
 
-## 📝 Licença
-Uso acadêmico / educacional.
+## 🏗️ CI — `.github/workflows/ci.yml` (um único job)
+Altere `branches` para `master` se seu repositório usar `master`.
+
+```yaml
+name: CI Pipeline (TS)
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar testes
+        run: npm test
+
+      - name: Build
+        run: npm run build
+```
+
+> Se o Actions não iniciar: verifique **nome da branch** e o **path do arquivo** `.github/workflows/ci.yml`. Confira também se o repositório não está com Actions desabilitado.
 
 ---
 
-Desenvolvido por **Heclair Sousa** 💡
+## 🖼️ Print de demonstração
+Abaixo um *print* meramente ilustrativo para o README:
+
+![CI Demo](./ci-demo.png)
+
+---
+
+## ✅ Checklist do que está implementado
+- [x] YAML do GitHub Actions em `.github/workflows/ci.yml`
+- [x] Execução automática em push/pull request na branch principal
+- [x] Testes executando com sucesso (Jest 29 + ts-jest 29)
+- [x] Organização correta do projeto e scripts no `package.json`
+- [x] Sem banco real: armazenamento em memória (mock)
+
+---
+
+Desenvolvido por **Heclair Sousa**

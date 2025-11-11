@@ -1,20 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2019",
+    "target": "ES2020",
     "module": "commonjs",
     "rootDir": ".",
     "outDir": "dist",
-
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
+    "lib": ["ES2020"],
     "types": ["node", "jest"],
-
-    "sourceMap": true,
-    "declaration": false,
-
-    "verbatimModuleSyntax": false
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true
   },
   "include": ["src", "App.ts", "App.test.ts"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
