@@ -4,12 +4,17 @@
     "module": "commonjs",
     "rootDir": ".",
     "outDir": "dist",
+
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "sourceMap": true
+    "types": ["node", "jest"],
+
+    "sourceMap": true,
+    "declaration": false,
+
+    "verbatimModuleSyntax": false
   },
   "include": ["src", "App.ts", "App.test.ts"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["dist", "node_modules"]
 }

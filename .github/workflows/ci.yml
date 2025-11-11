@@ -9,11 +9,9 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4
@@ -22,7 +20,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
+          cache: 'npm'
 
       - name: Instalar dependências
         run: npm ci
@@ -32,11 +30,3 @@ jobs:
 
       - name: Executar build
         run: npm run build
-
-      # Opcional: Codecov (remova se não usar)
-      - name: Upload coverage reports
-        if: matrix.node-version == '20.x'
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./coverage/lcov.info
-          fail_ci_if_error: false
